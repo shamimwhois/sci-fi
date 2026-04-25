@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: var(--bg-1); }
+        .electric-frame { animation: frameEdgeSpin 4s linear infinite; }
+        .hud-grid { opacity: 0.1; }
+        .hud-card { margin: 3rem auto; max-width: 400px; }
+        .form-group { gap: 1rem; }
+        .social-buttons { margin-top: 2rem; }
+    </style>
+</head>
+<body>
+    <div class="hud-loader is-active" style="display: none;"></div>
+    <div class="electric-frame hud-card">
+        <h2 class="section-title">Authenticate with HUD</h2>
+        <form class="form">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" class="hud-input" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="hud-input" id="password">
+                <div class="toggle-password">
+                    <svg class="eye-icon" aria-hidden="true">&lt;path d="M10 9L9 10L5 5L7 3L9 1 L10 2 L10 9" /&gt;</svg>
+                </div>
+            </div>
+            <div class="social-buttons">
+                <button class="hud-btn" id="google">Google</button>
+                <button class="hud-btn-alt" id="github">GitHub</button>
+                <button class="hud-btn" id="facebook">Facebook</button>
+                <button class="hud-btn" id="twitter">Twitter</button>
+            </div>
+            <button type="submit" class="hud-btn">Login</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

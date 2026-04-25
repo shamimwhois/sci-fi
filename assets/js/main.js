@@ -921,7 +921,35 @@ function initAssistant() {
 
 
 
+function initMatrixBackground() {
+  const container = document.getElementById("matrixBg");
+  if (!container) return;
+
+  const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+  const columnCount = Math.floor(window.innerWidth / 18);
+  const duration = 12 + Math.random() * 8;
+  const delay = Math.random() * 4;
+
+  for (let i = 0; i < columnCount; i++) {
+    const column = document.createElement("div");
+    column.className = "matrix-column";
+    column.style.left = `${(i / columnCount) * 100}%`;
+    column.style.animationDuration = `${duration + Math.random() * 6}s`;
+    column.style.animationDelay = `${-delay - Math.random() * duration}s`;
+    column.style.opacity = 0.25 + Math.random() * 0.3;
+
+    let text = "";
+    const length = 15 + Math.floor(Math.random() * 25);
+    for (let j = 0; j < length; j++) {
+      text += chars[Math.floor(Math.random() * chars.length)] + "\u2003";
+    }
+    column.textContent = text;
+    container.appendChild(column);
+  }
+}
+
 function boot() {
+  initMatrixBackground();
   window.HudChrome?.initThemes();
   renderTabs();
   bindTabs();
