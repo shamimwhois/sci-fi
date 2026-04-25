@@ -1,9 +1,10 @@
 /**
- * Shared HUD theme switcher + UI click audio (SoulExtract charity click).
- * Canonical URL — use a single slash after charity/ (not charity//sounds).
+ * Shared HUD theme switcher + UI click audio (Arwes sci-fi sounds).
  */
 (function (global) {
-  const CLICK_MP3_URL = "https://soulextract.com/charity/sounds/click.mp3";
+  const CLICK_MP3_URL = "https://arwes.dev/assets/sounds/click.mp3";
+  const ASSEMBLE_MP3_URL = "https://arwes.dev/assets/sounds/assemble.mp3";
+  const TYPE_MP3_URL = "https://arwes.dev/assets/sounds/type.mp3";
 
   const HUD_THEMES = [
     "dark_cyan",
@@ -19,10 +20,16 @@
   ];
 
   const CLICK_POOL_SIZE = 6;
+  const ASSEMBLE_POOL_SIZE = 3;
+  const TYPE_POOL_SIZE = 4;
 
   let audioArmed = false;
   const clickPool = [];
+  const assemblePool = [];
+  const typePool = [];
   let poolIndex = 0;
+  let assembleIndex = 0;
+  let typeIndex = 0;
 
   function ensureClickPool() {
     if (clickPool.length) return;
@@ -30,6 +37,24 @@
       const a = new Audio(CLICK_MP3_URL);
       a.preload = "auto";
       clickPool.push(a);
+    }
+  }
+
+  function ensureAssemblePool() {
+    if (assemblePool.length) return;
+    for (let i = 0; i < ASSEMBLE_POOL_SIZE; i += 1) {
+      const a = new Audio(ASSEMBLE_MP3_URL);
+      a.preload = "auto";
+      assemblePool.push(a);
+    }
+  }
+
+  function ensureTypePool() {
+    if (typePool.length) return;
+    for (let i = 0; i < TYPE_POOL_SIZE; i += 1) {
+      const a = new Audio(TYPE_MP3_URL);
+      a.preload = "auto";
+      typePool.push(a);
     }
   }
 
@@ -41,6 +66,34 @@
     poolIndex += 1;
     const jitter = 0.88 + Math.random() * 0.12;
     const rate = 0.97 + Math.random() * 0.06;
+    node.playbackRate = rate;
+    node.volume = Math.min(1, Math.max(0, volume * jitter));
+    node.currentTime = 0;
+    node.play().catch(() => {});
+  }
+
+  function playAssembleSound(volume = 0.8) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!audioArmed) return;
+    ensureAssemblePool();
+    const node = assemblePool[assembleIndex % assemblePool.length];
+    assembleIndex += 1;
+    const jitter = 0.9 + Math.random() * 0.1;
+    const rate = 0.95 + Math.random() * 0.08;
+    node.playbackRate = rate;
+    node.volume = Math.min(1, Math.max(0, volume * jitter));
+    node.currentTime = 0;
+    node.play().catch(() => {});
+  }
+
+  function playTypeSound(volume = 0.5) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!audioArmed) return;
+    ensureTypePool();
+    const node = typePool[typeIndex % typePool.length];
+    typeIndex += 1;
+    const jitter = 0.92 + Math.random() * 0.08;
+    const rate = 0.98 + Math.random() * 0.04;
     node.playbackRate = rate;
     node.volume = Math.min(1, Math.max(0, volume * jitter));
     node.currentTime = 0;
@@ -61,6 +114,8 @@
       if (audioArmed) return;
       audioArmed = true;
       ensureClickPool();
+      ensureAssemblePool();
+      ensureTypePool();
     };
     document.addEventListener("pointerdown", arm, { once: true, passive: true });
   }
@@ -111,8 +166,12 @@
 
   global.HudChrome = {
     CLICK_MP3_URL,
+    ASSEMBLE_MP3_URL,
+    TYPE_MP3_URL,
     HUD_THEMES,
     playUiSound,
+    playAssembleSound,
+    playTypeSound,
     initAudioArm,
     initUiClickSounds,
     initThemes

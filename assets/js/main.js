@@ -610,6 +610,9 @@ function initTypewriter() {
       target.textContent = typeLines.join(' | ');
       return;
     }
+    if (!deleting && idx > 0 && idx <= current.length) {
+      window.HudChrome?.playTypeSound?.(0.4);
+    }
     timeoutId = window.setTimeout(tick, delay);
   }
 
@@ -950,6 +953,8 @@ function initMatrixBackground() {
 
 function boot() {
   initMatrixBackground();
+  window.HudChrome?.initAudioArm?.();
+  window.HudChrome?.initUiClickSounds?.();
   window.HudChrome?.initThemes();
   renderTabs();
   bindTabs();
@@ -967,6 +972,12 @@ function boot() {
   initPackageModal();
   initAssistant();
   initMobileNav();
+  
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      window.HudChrome?.playAssembleSound?.(0.75);
+    }, 800);
+  });
 }
 
 boot();
