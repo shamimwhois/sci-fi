@@ -611,7 +611,7 @@ function initTypewriter() {
       return;
     }
     if (!deleting && idx > 0 && idx <= current.length && idx % 2 === 0) {
-      // Silent - no sound on typewriter
+      window.HudChrome?.playTypeSound?.(0.5);
     }
     timeoutId = window.setTimeout(tick, delay);
   }
@@ -975,7 +975,7 @@ function initGlitchEffect() {
     glitchEl.textContent = display;
     
     if (Math.floor(iteration) > 0 && Math.floor(iteration) <= targetText.length) {
-      // Silent - no sound on glitch animation
+      window.HudChrome?.playAssembleSound?.(0.5);
     }
     
     iteration += 1 / 3;
