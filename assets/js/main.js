@@ -973,6 +973,11 @@ function initGlitchEffect() {
       .join("");
 
     glitchEl.textContent = display;
+    
+    if (Math.floor(iteration) > 0 && Math.floor(iteration) <= targetText.length) {
+      window.HudChrome?.playAssembleSound?.(0.35);
+    }
+    
     iteration += 1 / 3;
 
     if (Math.floor(iteration) >= targetText.length) {
