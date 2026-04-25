@@ -951,8 +951,161 @@ function initMatrixBackground() {
   }
 }
 
+function initGlitchEffect() {
+  const glitchEl = document.getElementById("glitchText");
+  const cursorEl = document.getElementById("cursorBlink");
+  const subtitleEl = document.getElementById("heroSubtitle");
+  if (!glitchEl) return;
+
+  const targetText = "MD SHAMIM HOSSAIN";
+  const chars = "!<>-_\\/[]{}—=+*^?#________";
+  let iteration = 0;
+  let intervalId = null;
+  let hasCompleted = false;
+
+  function scramble() {
+    const display = targetText
+      .split("")
+      .map((char, idx) => {
+        if (idx < Math.floor(iteration)) return targetText[idx];
+        return chars[Math.floor(Math.random() * chars.length)];
+      })
+      .join("");
+
+    glitchEl.textContent = display;
+    iteration += 1 / 3;
+
+    if (Math.floor(iteration) >= targetText.length) {
+      glitchEl.textContent = targetText;
+      clearInterval(intervalId);
+      intervalId = null;
+      hasCompleted = true;
+      if (cursorEl) {
+        setTimeout(() => {
+          cursorEl.style.opacity = "0";
+          cursorEl.style.transition = "opacity 0.6s ease";
+        }, 1200);
+      }
+    }
+  }
+
+  function start() {
+    iteration = 0;
+    hasCompleted = false;
+    glitchEl.textContent = "";
+    glitchEl.classList.remove("visible");
+    glitchEl.style.opacity = "0";
+    glitchEl.style.transform = "translateY(20px)";
+    glitchEl.style.transition = "opacity 0.8s ease-out, transform 0.8s ease-out";
+
+    if (cursorEl) {
+      cursorEl.style.opacity = "1";
+      cursorEl.style.transition = "none";
+    }
+
+    if (subtitleEl) {
+      subtitleEl.classList.remove("visible");
+      subtitleEl.style.opacity = "0";
+      subtitleEl.style.transform = "translateY(15px)";
+      subtitleEl.style.transition = "opacity 0.8s ease-out 0.3s, transform 0.8s ease-out 0.3s";
+    }
+
+    if (intervalId) clearInterval(intervalId);
+    intervalId = setInterval(scramble, 50);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        glitchEl.classList.add("visible");
+        glitchEl.style.opacity = "1";
+        glitchEl.style.transform = "translateY(0)";
+      });
+    });
+
+    setTimeout(() => {
+      if (subtitleEl) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            subtitleEl.classList.add("visible");
+            subtitleEl.style.opacity = "0.8";
+            subtitleEl.style.transform = "translateY(0)";
+          });
+        });
+      }
+    }, 300);
+  }
+
+  function addHoverGlitch() {
+    if (!glitchEl) return;
+    glitchEl.addEventListener("mouseenter", () => {
+      if (hasCompleted) {
+        glitchEl.style.transform = "translate(2px, -1px)";
+        glitchEl.style.transition = "transform 0.08s ease, text-shadow 0.08s ease";
+        setTimeout(() => {
+          glitchEl.style.transform = "translate(-2px, 1px)";
+        }, 80);
+        setTimeout(() => {
+          glitchEl.style.transform = "translate(0, 0)";
+        }, 160);
+      }
+    });
+    glitchEl.addEventListener("mouseleave", () => {
+      glitchEl.style.transform = "translate(0, 0)";
+    });
+  }
+
+  function addKeyboardTrigger() {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "r" || e.key === "R") {
+        if (document.activeElement === document.body || document.activeElement.tagName === "BODY") {
+          if (cursorEl) {
+            cursorEl.style.opacity = "1";
+            cursorEl.style.transition = "none";
+          }
+          start();
+        }
+      }
+    });
+  }
+
+  setTimeout(start, 400);
+  addHoverGlitch();
+  addKeyboardTrigger();
+
+  window.triggerGlitch = function() {
+    if (cursorEl) {
+      cursorEl.style.opacity = "1";
+      cursorEl.style.transition = "none";
+    }
+    start();
+  };
+}
+
+function initParticles() {
+  const container = document.getElementById("particles");
+  if (!container) return;
+
+  const colors = ["var(--line)", "var(--hot)", "var(--violet)", "var(--line)", "var(--hot)"];
+  const particleCount = 30;
+
+  for (let i = 0; i < particleCount; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    const size = Math.random() * 4 + 1.5;
+    particle.style.width = size + "px";
+    particle.style.height = size + "px";
+    particle.style.left = Math.random() * 100 + "%";
+    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.boxShadow = `0 0 ${size * 3}px ${colors[Math.floor(Math.random() * colors.length)]}`;
+    particle.style.animationDuration = Math.random() * 8 + 6 + "s";
+    particle.style.animationDelay = Math.random() * 10 + "s";
+    container.appendChild(particle);
+  }
+}
+
 function boot() {
   initMatrixBackground();
+  initGlitchEffect();
+  initParticles();
   window.HudChrome?.initAudioArm?.();
   window.HudChrome?.initUiClickSounds?.();
   window.HudChrome?.initThemes();

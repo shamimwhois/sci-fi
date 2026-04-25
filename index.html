@@ -116,16 +116,22 @@
     </header>
 
     <main>
+      <div class="corner-accent top-left" aria-hidden="true"></div>
+      <div class="corner-accent top-right" aria-hidden="true"></div>
+      <div class="corner-accent bottom-left" aria-hidden="true"></div>
+      <div class="corner-accent bottom-right" aria-hidden="true"></div>
+      <div id="particles" class="particles" aria-hidden="true"></div>
       <section
         id="hero"
         class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 items-center"
       >
-        <div class="space-y-6 reveal">
+        <div class="space-y-6 reveal hero-content">
           <p class="text-cyanx tracking-[0.3em] uppercase text-xs font-semibold">Online // Portfolio</p>
           <div class="hero-name-wrap">
-            <h1 class="hero-name-line">MD SHAMIM HOSSAIN</h1>
+            <h1 class="hero-name-line glitch-text" id="glitchText"></h1>
+            <span class="cursor-blink" id="cursorBlink"></span>
           </div>
-          <h2 class="font-['Orbitron'] text-xl sm:text-2xl text-violetx">
+          <h2 class="font-['Orbitron'] text-xl sm:text-2xl text-violetx subtitle" id="heroSubtitle">
             <span id="typewriter"></span><span class="cursor-bar">|</span>
           </h2>
           <p class="max-w-xl text-slate-300 text-lg">
