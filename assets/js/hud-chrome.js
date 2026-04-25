@@ -3,8 +3,8 @@
  */
 (function (global) {
   const CLICK_MP3_URL = "https://arwes.dev/assets/sounds/click.mp3";
-  const ASSEMBLE_MP3_URL = "https://arwes.dev/assets/sounds/assemble.mp3";
-  const TYPE_MP3_URL = "https://arwes.dev/assets/sounds/type.mp3";
+    const ASSEMBLE_MP3_URL = "https://arwes.dev/assets/sounds/assemble.mp3";
+    const TYPE_MP3_URL = "https://arwes.dev/assets/sounds/type.mp3";
 
   const HUD_THEMES = [
     "dark_cyan",

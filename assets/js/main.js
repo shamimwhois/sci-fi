@@ -611,7 +611,7 @@ function initTypewriter() {
       return;
     }
     if (!deleting && idx > 0 && idx <= current.length && idx % 2 === 0) {
-      window.HudChrome?.playTypeSound?.(0.5);
+      window.HudChrome?.playAssembleSound?.(0.5);
     }
     timeoutId = window.setTimeout(tick, delay);
   }
@@ -975,7 +975,7 @@ function initGlitchEffect() {
     glitchEl.textContent = display;
     
     if (Math.floor(iteration) > 0 && Math.floor(iteration) <= targetText.length) {
-      window.HudChrome?.playAssembleSound?.(0.5);
+      window.HudChrome?.playTypeSound?.(0.5);
     }
     
     iteration += 1 / 3;
@@ -1130,12 +1130,6 @@ function boot() {
   initPackageModal();
   initAssistant();
   initMobileNav();
-  
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      window.HudChrome?.playAssembleSound?.(0.75);
-    }, 800);
-  });
 }
 
 boot();
