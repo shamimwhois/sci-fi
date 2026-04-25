@@ -116,10 +116,10 @@
   function volumeForClickTarget(target) {
     const interactive = target.closest("a, button, summary, [role='tab']");
     if (!interactive) return 1;
-    if (interactive.matches("[role='tab']")) return 0.72;
-    if (interactive.matches("a")) return 0.88;
-    if (interactive.matches("summary")) return 0.8;
-    return 0.92;
+    if (interactive.matches("[role='tab']")) return 0.9;
+    if (interactive.matches("a")) return 1;
+    if (interactive.matches("summary")) return 0.9;
+    return 1;
   }
 
   function initAudioArm() {
@@ -190,3 +190,29 @@
     initThemes
   };
 })(typeof window !== "undefined" ? window : this);
+
+
+initTypewriter(document.getElementById("typewriter"), {
+  loop: true,
+  delay: 75,
+  deleteSpeed: 50,
+  strings: [
+    "Full-Stack Developer",
+    "Software Engineer",
+    "Tech Enthusiast",
+    "Problem Solver",
+    "Lifelong Learner"
+  ]
+});
+
+HudChrome.initAudioArm();
+HudChrome.initUiClickSounds();
+HudChrome.initThemes();
+
+
+glitchText(document.getElementById("glitchName"), {
+  chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()",
+  glitchDuration: 500,
+  glitchInterval: 1000
+});
+
