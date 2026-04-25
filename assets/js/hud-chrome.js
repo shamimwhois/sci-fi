@@ -19,9 +19,9 @@
     "light_sand"
   ];
 
-  const CLICK_POOL_SIZE = 6;
-  const ASSEMBLE_POOL_SIZE = 3;
-  const TYPE_POOL_SIZE = 4;
+  const CLICK_POOL_SIZE = 12;
+  const ASSEMBLE_POOL_SIZE = 8;
+  const TYPE_POOL_SIZE = 10;
 
   let audioArmed = false;
   const clickPool = [];
@@ -30,6 +30,10 @@
   let poolIndex = 0;
   let assembleIndex = 0;
   let typeIndex = 0;
+  let lastClickTime = 0;
+  let lastAssembleTime = 0;
+  let lastTypeTime = 0;
+  const THROTTLE_MS = 50;
 
   function ensureClickPool() {
     if (clickPool.length) return;
@@ -61,6 +65,9 @@
   function playUiSound(volume = 1) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!audioArmed) return;
+    const now = Date.now();
+    if (now - lastClickTime < THROTTLE_MS) return;
+    lastClickTime = now;
     ensureClickPool();
     const node = clickPool[poolIndex % clickPool.length];
     poolIndex += 1;
@@ -75,6 +82,9 @@
   function playAssembleSound(volume = 0.8) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!audioArmed) return;
+    const now = Date.now();
+    if (now - lastAssembleTime < THROTTLE_MS * 2) return;
+    lastAssembleTime = now;
     ensureAssemblePool();
     const node = assemblePool[assembleIndex % assemblePool.length];
     assembleIndex += 1;
@@ -89,6 +99,9 @@
   function playTypeSound(volume = 0.5) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!audioArmed) return;
+    const now = Date.now();
+    if (now - lastTypeTime < THROTTLE_MS) return;
+    lastTypeTime = now;
     ensureTypePool();
     const node = typePool[typeIndex % typePool.length];
     typeIndex += 1;
